@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
 
-    val viewModel: AuthViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,9 @@ class AuthActivity : BaseActivity() {
 
             ApplicationTheme(
                 darkTheme = isDark.value,
+                scaffoldState = scaffoldState,
+                stateMessage = authViewModel.stateMessage.value,
+                removeStateMessage = { authViewModel.removeStateMessage() }
             ) {
 
                 if (viewState.value.previousUserCheck == true) {

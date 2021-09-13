@@ -4,6 +4,8 @@
         <color android:color="@color/black" />
     </item>
     <item
+        android:width="110dp"
+        android:height="110dp"
         android:drawable="@drawable/ic_launcher_foreground"
         android:gravity="center" />
 </layer-list>

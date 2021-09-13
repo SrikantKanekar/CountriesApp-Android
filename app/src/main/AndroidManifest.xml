@@ -27,7 +27,8 @@
         </activity>
 
         <activity android:name=".presentation.ui.main.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/splashScreen">
         </activity>
     </application>
 

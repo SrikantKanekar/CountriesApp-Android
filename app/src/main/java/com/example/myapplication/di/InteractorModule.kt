@@ -7,11 +7,12 @@ import com.example.myapplication.interactors.auth.AttemptLogin
 import com.example.myapplication.interactors.auth.AttemptRegistration
 import com.example.myapplication.interactors.auth.AuthInteractors
 import com.example.myapplication.interactors.auth.CheckPreviousUser
+import com.example.myapplication.interactors.main.GetCountries
+import com.example.myapplication.interactors.main.MainInteractors
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -31,13 +32,10 @@ object InteractorModule {
     }
 
 
-//    @Provides
-//    fun provideHomeInteractors(
-//        app: BaseApplication
-//    ): HomeInteractors {
-//        return HomeInteractors(
-//            ConnectToFaircon(app),
-//            DisconnectFromFaircon(app)
-//        )
-//    }
+    @Provides
+    fun provideHomeInteractors(): MainInteractors {
+        return MainInteractors(
+            GetCountries()
+        )
+    }
 }

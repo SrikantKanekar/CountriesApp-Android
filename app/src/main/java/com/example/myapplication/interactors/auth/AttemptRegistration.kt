@@ -43,63 +43,80 @@ class AttemptRegistration(
 
         val user = userDao.searchByEmail(email)
 
-        val pk = user?.pk ?: Random.nextInt()
+        if (user != null){
+            emit(
+                DataState.error<AuthViewState>(
+                    response = Response(
+                        USER_ALREADY_EXIST,
+                        UiType.SnackBar,
+                        MessageType.Error
+                    ),
+                    stateEvent = stateEvent
+                )
+            )
+        } else {
 
-        // Save user
-        val result1 = userDao.insertAndReplace(
-            User(
+            val pk = Random.nextInt(0, 5000)
+
+            // Save user
+            val result1 = userDao.insertAndReplace(
+                User(
+                    pk,
+                    email,
+                    mobile,
+                    name,
+                    password
+                )
+            )
+            if (result1 < 0) {
+                emit(
+                    DataState.error(
+                        response = Response(
+                            ERROR_SAVE_ACCOUNT_PROPERTIES,
+                            UiType.Dialog,
+                            MessageType.Error
+                        ),
+                        stateEvent = stateEvent
+                    )
+                )
+                return@flow
+            }
+
+            // Save token
+            val token = Token(
                 pk,
-                email,
-                mobile,
-                name,
-                password
+                "token"
             )
-        )
-        if (result1 < 0) {
+            val result2 = tokenDao.insert(token)
+            if (result2 < 0) {
+                emit(
+                    DataState.error(
+                        response = Response(
+                            ERROR_SAVE_AUTH_TOKEN,
+                            UiType.Dialog,
+                            MessageType.Error
+                        ),
+                        stateEvent = stateEvent
+                    )
+                )
+                return@flow
+            }
+
+            // Save email
+            emailDataStore.updateAuthenticatedUserEmail(email)
+
             emit(
-                DataState.error(
-                    response = Response(
-                        ERROR_SAVE_ACCOUNT_PROPERTIES,
-                        UiType.Dialog,
-                        MessageType.Error
-                    ),
-                    stateEvent = stateEvent
+                DataState.data(
+                    data = AuthViewState(token = token),
+                    stateEvent = stateEvent,
+                    response = null
                 )
             )
         }
-
-        // Save token
-        val token = Token(
-            pk,
-            "token"
-        )
-        val result2 = tokenDao.insert(token)
-        if (result2 < 0) {
-            emit(
-                DataState.error(
-                    response = Response(
-                        ERROR_SAVE_AUTH_TOKEN,
-                        UiType.Dialog,
-                        MessageType.Error
-                    ),
-                    stateEvent = stateEvent
-                )
-            )
-        }
-
-        // Save email
-        emailDataStore.updateAuthenticatedUserEmail(email)
-
-        emit(
-            DataState.data(
-                data = AuthViewState(token = token),
-                stateEvent = stateEvent,
-                response = null
-            )
-        )
     }
 
     companion object {
+        const val USER_ALREADY_EXIST = "User with given email already exists"
         const val ERROR_SAVE_ACCOUNT_PROPERTIES =
             "Error saving account properties.\nTry restarting the app."
         const val ERROR_SAVE_AUTH_TOKEN =

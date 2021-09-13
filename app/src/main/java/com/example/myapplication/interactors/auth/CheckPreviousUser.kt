@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.flow
  *  - If the user doesn't exist, user is navigated to login screen
  */
 class CheckPreviousUser(
-    private val authTokenDao: TokenDao,
-    private val accountPropertiesDao: UserDao,
+    private val tokenDao: TokenDao,
+    private val userDao: UserDao,
     private val emailDataStore: EmailDataStore
 ) {
 
@@ -37,7 +37,7 @@ class CheckPreviousUser(
         } else {
 
             val cacheResult = safeCacheCall(Dispatchers.IO) {
-                accountPropertiesDao.searchByEmail(email)
+                userDao.searchByEmail(email)
             }
 
             emit(
@@ -47,7 +47,7 @@ class CheckPreviousUser(
                 ) {
                     override suspend fun handleSuccess(resultObj: User): DataState<AuthViewState> {
                         if (resultObj.pk > -1) {
-                            authTokenDao.searchByPk(resultObj.pk)?.let { token ->
+                            tokenDao.searchByPk(resultObj.pk)?.let { token ->
                                 if (token.token != null) {
                                     return DataState.data(
                                         data = AuthViewState(token = token),

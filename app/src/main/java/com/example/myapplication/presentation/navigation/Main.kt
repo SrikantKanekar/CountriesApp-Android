@@ -3,6 +3,6 @@ package com.example.myapplication.presentation.navigation
 sealed class Main(
     val route: String,
 ) {
-    object List : Main("List")
+    object Home : Main("Home")
     object Detail : Main("Detail")
 }

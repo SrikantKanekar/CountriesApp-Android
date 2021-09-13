@@ -34,12 +34,11 @@ class AttemptLogin(
         password: String
     ): Flow<DataState<AuthViewState>?> = flow {
 
-
         val user = userDao.searchByEmail(email)
 
         if (user == null || user.password != password) {
             emit(
-                DataState.error(
+                DataState.error<AuthViewState>(
                     response = Response(
                         INVALID_CREDENTIALS,
                         UiType.SnackBar,
@@ -48,28 +47,29 @@ class AttemptLogin(
                     stateEvent = stateEvent
                 )
             )
-        }
+        } else {
 
-        val authToken = Token(
-            1,
-            "token"
-        )
-
-        emailDataStore.updateAuthenticatedUserEmail(email)
-
-        emit(
-            DataState.data(
-                data = AuthViewState(
-                    token = authToken
-                ),
-                response = Response(
-                    message = "Logged in User",
-                    uiType = UiType.None,
-                    messageType = MessageType.Success
-                ),
-                stateEvent = stateEvent
+            val authToken = Token(
+                user.pk,
+                "token"
             )
-        )
+
+            emailDataStore.updateAuthenticatedUserEmail(email)
+
+            emit(
+                DataState.data(
+                    data = AuthViewState(
+                        token = authToken
+                    ),
+                    response = Response(
+                        message = "Logged in User",
+                        uiType = UiType.None,
+                        messageType = MessageType.Success
+                    ),
+                    stateEvent = stateEvent
+                )
+            )
+        }
     }
 
     companion object {
