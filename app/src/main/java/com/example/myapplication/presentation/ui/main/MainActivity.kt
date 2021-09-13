@@ -1,21 +1,17 @@
-package com.example.myapplication.presentation.ui
+package com.example.myapplication.presentation.ui.main
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import com.example.myapplication.presentation.theme.ApplicationTheme
+import com.example.myapplication.presentation.ui.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ApplicationTheme {
+            ApplicationTheme(darkTheme = isDark.value) {
 
 
             }

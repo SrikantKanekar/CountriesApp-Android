@@ -17,11 +17,11 @@ interface UserDao {
     suspend fun searchByPk(pk: Int): User
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertAndReplace(accountProperties: User): Long
+    suspend fun insertAndReplace(user: User): Long
 
     @Insert(onConflict = IGNORE)
-    suspend fun insertOrIgnore(accountProperties: User): Long
+    suspend fun insertOrIgnore(user: User): Long
 
     @Query("UPDATE user_table SET email = :email, name = :name WHERE pk = :pk")
-    suspend fun updateAccountProperties(pk: Int, email: String, name: String)
+    suspend fun updateUser(pk: Int, email: String, name: String)
 }

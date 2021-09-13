@@ -1,7 +1,6 @@
 package com.example.myapplication.presentation.theme
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -40,7 +39,7 @@ private val DarkColorPalette = darkColors(
 
 @Composable
 fun ApplicationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean,
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
@@ -50,9 +49,9 @@ fun ApplicationTheme(
     }
 
     MaterialTheme(
-            colors = colors,
-            typography = Typography,
-            shapes = Shapes,
-            content = content
+        colors = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
     )
 }

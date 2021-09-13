@@ -10,7 +10,7 @@ import com.example.myapplication.database.entity.Token
 interface TokenDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(authToken: TokenDao): Long
+    suspend fun insert(token: Token): Long
 
     @Query("UPDATE token_table SET token = null WHERE account_pk = :pk")
     suspend fun nullifyToken(pk: Int): Int
