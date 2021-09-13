@@ -44,8 +44,8 @@ constructor(
             is RegisterAttemptEvent -> {
                 authInteractors.attemptRegistration.execute(
                     stateEvent = stateEvent,
-                    name = stateEvent.username,
-                    mobile = "",
+                    name = stateEvent.name,
+                    mobile = stateEvent.mobile,
                     email = stateEvent.email,
                     password = stateEvent.password,
                 )
@@ -72,17 +72,17 @@ constructor(
     }
 
     fun register(
+        name: String,
+        mobile: String,
         email: String,
-        username: String,
         password: String,
-        confirmPassword: String,
     ) {
         setStateEvent(
             RegisterAttemptEvent(
-                email,
-                username,
-                password,
-                confirmPassword
+                name = name,
+                mobile = mobile,
+                email = email,
+                password = password
             )
         )
     }

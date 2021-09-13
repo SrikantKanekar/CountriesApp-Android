@@ -5,10 +5,10 @@ import com.example.myapplication.utils.StateEvent
 sealed class AuthStateEvent : StateEvent {
 
     data class RegisterAttemptEvent(
+        val name: String,
+        val mobile: String,
         val email: String,
-        val username: String,
         val password: String,
-        val confirm_password: String
     ) : AuthStateEvent() {
         override fun errorInfo() = "Registration attempt failed"
         override fun eventName() = "RegisterAttemptEvent"

@@ -61,11 +61,11 @@ class AttemptRegistration(
             // Save user
             val result1 = userDao.insertAndReplace(
                 User(
-                    pk,
-                    email,
-                    mobile,
-                    name,
-                    password
+                    pk = pk,
+                    name = name,
+                    mobile = mobile,
+                    email = email,
+                    password = password
                 )
             )
             if (result1 < 0) {

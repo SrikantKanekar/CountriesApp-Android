@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.flow
  * - [AuthToken] is returned to [AuthViewState]
  */
 class AttemptLogin(
-    private val tokenDao: TokenDao,
     private val userDao: UserDao,
     private val emailDataStore: EmailDataStore
 ) {

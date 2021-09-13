@@ -70,10 +70,10 @@ fun RegisterScreen(
                     && passwordState.isValid && confirmPasswordState.isValid
                 ) {
                     viewModel.register(
-                        emailState.text,
-                        usernameState.text,
-                        passwordState.text,
-                        confirmPasswordState.text
+                        name = usernameState.text,
+                        mobile = "",
+                        email = emailState.text,
+                        password = passwordState.text
                     )
                 }
             }
@@ -89,10 +89,10 @@ fun RegisterScreen(
                     && confirmPasswordState.isValid,
             onClick = {
                 viewModel.register(
-                    emailState.text,
-                    usernameState.text,
-                    passwordState.text,
-                    confirmPasswordState.text
+                    name = usernameState.text,
+                    mobile = "",
+                    email = emailState.text,
+                    password = passwordState.text
                 )
             }
         )

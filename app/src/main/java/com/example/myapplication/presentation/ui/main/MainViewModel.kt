@@ -3,6 +3,7 @@ package com.example.myapplication.presentation.ui.main
 import com.example.myapplication.interactors.main.MainInteractors
 import com.example.myapplication.presentation.ui.BaseViewModel
 import com.example.myapplication.presentation.ui.main.state.MainStateEvent
+import com.example.myapplication.presentation.ui.main.state.MainStateEvent.*
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.DataState
 import com.example.myapplication.utils.StateEvent
@@ -17,6 +18,10 @@ constructor(
     private val mainInteractors: MainInteractors
 ) : BaseViewModel<MainViewState>() {
 
+    init {
+        setStateEvent(GetCountriesEvent)
+    }
+
     override fun handleNewData(data: MainViewState) {
         data.countries?.let { countries ->
             setViewState(viewState.value.copy(countries = countries))
@@ -26,7 +31,7 @@ constructor(
     override fun setStateEvent(stateEvent: StateEvent) {
         val job: Flow<DataState<MainViewState>?> = when (stateEvent) {
 
-            is MainStateEvent.GetCountriesEvent -> {
+            is GetCountriesEvent -> {
                 mainInteractors.getCountries.execute(
                     stateEvent = stateEvent
                 )

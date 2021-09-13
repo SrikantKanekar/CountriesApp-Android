@@ -9,6 +9,7 @@ import com.example.myapplication.interactors.auth.AuthInteractors
 import com.example.myapplication.interactors.auth.CheckPreviousUser
 import com.example.myapplication.interactors.main.GetCountries
 import com.example.myapplication.interactors.main.MainInteractors
+import com.example.myapplication.network.CountriesApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,22 +21,24 @@ object InteractorModule {
 
     @Provides
     fun provideAuthInteractors(
-        authTokenDao: TokenDao,
-        accountPropertiesDao: UserDao,
+        tokenDao: TokenDao,
+        userDao: UserDao,
         emailDataStore: EmailDataStore
     ): AuthInteractors {
         return AuthInteractors(
-            AttemptLogin(authTokenDao, accountPropertiesDao, emailDataStore),
-            AttemptRegistration(authTokenDao, accountPropertiesDao, emailDataStore),
-            CheckPreviousUser(authTokenDao, accountPropertiesDao, emailDataStore)
+            AttemptLogin(userDao, emailDataStore),
+            AttemptRegistration(tokenDao, userDao, emailDataStore),
+            CheckPreviousUser(tokenDao, userDao, emailDataStore)
         )
     }
 
 
     @Provides
-    fun provideHomeInteractors(): MainInteractors {
+    fun provideHomeInteractors(
+        countriesApi: CountriesApi
+    ): MainInteractors {
         return MainInteractors(
-            GetCountries()
+            GetCountries(countriesApi)
         )
     }
 }
