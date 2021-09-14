@@ -42,6 +42,7 @@ class AuthActivity : BaseActivity() {
 
             ApplicationTheme(
                 darkTheme = isDark.value,
+                displayProgressBar = authViewModel.shouldDisplayProgressBar.value,
                 scaffoldState = scaffoldState,
                 stateMessage = authViewModel.stateMessage.value,
                 removeStateMessage = { authViewModel.removeStateMessage() }

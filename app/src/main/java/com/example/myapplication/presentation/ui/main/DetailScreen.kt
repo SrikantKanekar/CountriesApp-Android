@@ -14,6 +14,7 @@ import com.example.myapplication.presentation.navigation.Auth
 
 @Composable
 fun DetailScreen(
+    country: String,
     navController: NavHostController
 ) {
     Column(
@@ -25,6 +26,6 @@ fun DetailScreen(
 
         Spacer(modifier = Modifier.height(150.dp))
 
-        Text(text = "Detail Screen")
+        Text(text = "Detail Screen of $country")
     }
 }

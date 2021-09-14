@@ -9,4 +9,10 @@ sealed class MainStateEvent : StateEvent {
         override fun eventName() = "GetCountriesEvent"
         override fun shouldDisplayProgressBar() = true
     }
+
+    object DeleteUserEvent : MainStateEvent() {
+        override fun errorInfo() = "Failed to Delete User"
+        override fun eventName() = "DeleteUserEvent"
+        override fun shouldDisplayProgressBar() = false
+    }
 }

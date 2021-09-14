@@ -6,6 +6,7 @@ import com.example.myapplication.presentation.ui.main.state.MainStateEvent
 import com.example.myapplication.presentation.ui.main.state.MainStateEvent.*
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.DataState
+import com.example.myapplication.utils.SessionManager
 import com.example.myapplication.utils.StateEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class MainViewModel
 @Inject
 constructor(
+    private val sessionManager: SessionManager,
     private val mainInteractors: MainInteractors
 ) : BaseViewModel<MainViewState>() {
 
@@ -36,6 +38,12 @@ constructor(
                     stateEvent = stateEvent
                 )
             }
+
+            is DeleteUserEvent -> {
+                mainInteractors.deleteUser.execute(
+                    stateEvent = stateEvent
+                )
+            }
             else -> emitInvalidStateEvent(stateEvent)
         }
         launchJob(stateEvent, job)
@@ -43,6 +51,15 @@ constructor(
 
     override fun initViewState(): MainViewState {
         return MainViewState()
+    }
+
+    fun deleteUser() {
+        sessionManager.logout()
+        setStateEvent(DeleteUserEvent)
+    }
+
+    fun logout() {
+        sessionManager.logout()
     }
 
     override fun onCleared() {

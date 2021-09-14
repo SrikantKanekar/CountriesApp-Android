@@ -7,6 +7,7 @@ import com.example.myapplication.interactors.auth.AttemptLogin
 import com.example.myapplication.interactors.auth.AttemptRegistration
 import com.example.myapplication.interactors.auth.AuthInteractors
 import com.example.myapplication.interactors.auth.CheckPreviousUser
+import com.example.myapplication.interactors.main.DeleteUser
 import com.example.myapplication.interactors.main.GetCountries
 import com.example.myapplication.interactors.main.MainInteractors
 import com.example.myapplication.network.CountriesApi
@@ -35,10 +36,13 @@ object InteractorModule {
 
     @Provides
     fun provideHomeInteractors(
-        countriesApi: CountriesApi
+        countriesApi: CountriesApi,
+        userDao: UserDao,
+        emailDataStore: EmailDataStore
     ): MainInteractors {
         return MainInteractors(
-            GetCountries(countriesApi)
+            GetCountries(countriesApi),
+            DeleteUser(userDao, emailDataStore)
         )
     }
 }

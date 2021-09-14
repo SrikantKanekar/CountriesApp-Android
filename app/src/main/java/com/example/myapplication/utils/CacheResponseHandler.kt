@@ -32,7 +32,7 @@ abstract class CacheResponseHandler<ViewState, Data>(
                     DataState.error(
                         response = Response(
                             message = "${stateEvent?.errorInfo()}\n\nReason: $CACHE_DATA_NULL.",
-                            uiType = UiType.Dialog,
+                            uiType = UiType.None,
                             messageType = MessageType.Error
                         ),
                         stateEvent = stateEvent
