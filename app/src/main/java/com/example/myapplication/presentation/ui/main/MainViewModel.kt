@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.ui.main
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.myapplication.interactors.main.MainInteractors
 import com.example.myapplication.presentation.ui.BaseViewModel
 import com.example.myapplication.presentation.ui.main.state.MainStateEvent
@@ -19,6 +20,24 @@ constructor(
     private val sessionManager: SessionManager,
     private val mainInteractors: MainInteractors
 ) : BaseViewModel<MainViewState>() {
+
+    val logoutDialog = mutableStateOf(false)
+    val sortDialog = mutableStateOf(false)
+    val ascending = mutableStateOf(true)
+
+    fun setAscending(){
+        ascending.value = true
+        val sorted = viewState.value.countries?.sortedBy { it.name }
+        setViewState(viewState.value.copy(countries = sorted))
+        sortDialog.value = false
+    }
+
+    fun setDescending(){
+        ascending.value = false
+        val sorted = viewState.value.countries?.sortedByDescending { it.name }
+        setViewState(viewState.value.copy(countries = sorted))
+        sortDialog.value = false
+    }
 
     init {
         setStateEvent(GetCountriesEvent)

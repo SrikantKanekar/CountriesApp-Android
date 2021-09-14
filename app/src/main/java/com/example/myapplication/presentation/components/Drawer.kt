@@ -28,7 +28,7 @@ fun Drawer(
     Column {
 
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            painter = painterResource(id = R.drawable.ic_launcher),
             contentDescription = "",
             modifier = Modifier
                 .height(100.dp)

@@ -20,7 +20,7 @@ fun AppLogo(
     size: Dp = 110.dp
 ) {
 
-    val painterResource = painterResource(R.drawable.ic_launcher_foreground)
+    val painterResource = painterResource(R.drawable.ic_launcher)
 
     Image(
         modifier = modifier.requiredSize(size),
