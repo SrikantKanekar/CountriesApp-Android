@@ -10,14 +10,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import coil.decode.SvgDecoder
 import com.example.myapplication.model.Country
-import com.example.myapplication.presentation.components.MyButton
 
 @ExperimentalCoilApi
 @Composable
@@ -44,10 +48,12 @@ fun HomeScreen(
 
     if (viewModel.sortDialog.value) {
         AlertDialog(
-            modifier = Modifier,
+            modifier = Modifier
+                .width(300.dp),
             title = { Text(text = "Sort Countries") },
             text = {
                 Column {
+                    Spacer(modifier = Modifier.height(50.dp))
                     RadioOption(
                         name = "Ascending",
                         selected = viewModel.ascending.value,
@@ -84,10 +90,24 @@ fun CountryCard(
         Row(
             modifier = Modifier.padding(12.dp)
         ) {
+
+            val imageLoader = ImageLoader
+                .Builder(LocalContext.current)
+                .componentRegistry {
+                    add(SvgDecoder(LocalContext.current))
+                }
+                .build()
+
             Image(
-                painter = rememberImagePainter("https://restcountries.eu/data/afg.svg"),
+                painter = rememberImagePainter(
+                    data = country.flag,
+                    imageLoader = imageLoader
+                ),
                 contentDescription = null,
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(shape = MaterialTheme.shapes.large),
+                contentScale = ContentScale.Crop
             )
             Column(
                 modifier = Modifier
@@ -118,7 +138,9 @@ fun RadioOption(
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier.width(160.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .padding(vertical = 2.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

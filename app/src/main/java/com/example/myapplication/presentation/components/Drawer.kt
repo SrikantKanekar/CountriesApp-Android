@@ -28,11 +28,12 @@ fun Drawer(
     Column {
 
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher),
+            painter = painterResource(id = R.drawable.ic_launcher_round),
             contentDescription = "",
             modifier = Modifier
-                .height(100.dp)
-                .padding(20.dp)
+                .height(150.dp)
+                .padding(horizontal = 20.dp)
+                .padding(vertical = 30.dp)
         )
 
         Spacer(
@@ -53,8 +54,8 @@ fun Drawer(
                         scaffoldState.drawerState.close()
                     }
                 })
-                .height(45.dp)
-                .padding(start = 10.dp)
+                .height(55.dp)
+                .padding(start = 20.dp)
         ) {
             Text(
                 text = "Home",
@@ -67,8 +68,8 @@ fun Drawer(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = { deleteAccount() })
-                .height(45.dp)
-                .padding(start = 10.dp)
+                .height(55.dp)
+                .padding(start = 20.dp)
         ) {
             Text(
                 text = "Delete Account",
@@ -81,8 +82,8 @@ fun Drawer(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = { logout() })
-                .height(45.dp)
-                .padding(start = 10.dp)
+                .height(55.dp)
+                .padding(start = 20.dp)
         ) {
             Text(
                 text = "Logout",

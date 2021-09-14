@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.ui.main
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,11 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.compose.rememberImagePainter
+import coil.decode.SvgDecoder
 
 @Composable
 fun DetailScreen(
@@ -28,12 +32,20 @@ fun DetailScreen(
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
+            val imageLoader = ImageLoader
+                .Builder(LocalContext.current)
+                .componentRegistry {
+                    add(SvgDecoder(LocalContext.current))
+                }
+                .build()
+
             Image(
-                painter = rememberImagePainter(country.flag),
+                painter = rememberImagePainter(
+                    data = country.flag,
+                    imageLoader = imageLoader
+                ),
                 contentDescription = null,
-                modifier = Modifier
-                    .height(300.dp)
-                    .fillMaxWidth(),
+                modifier = Modifier.height(250.dp).fillMaxWidth(),
                 contentScale = ContentScale.Crop
             )
             Column(

@@ -126,13 +126,13 @@ class MainActivity : BaseActivity() {
                                 modifier = Modifier,
                                 title = { Text(text = "Are You Sure?") },
                                 buttons = {
+                                    Spacer(modifier = Modifier.height(30.dp))
                                     Row(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(20.dp),
                                         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.End),
                                     ) {
-                                        Spacer(modifier = Modifier.height(20.dp))
                                         MyButton(
                                             text = "Yes",
                                             onClick = {
