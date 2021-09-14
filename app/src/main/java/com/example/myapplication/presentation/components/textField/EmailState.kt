@@ -3,6 +3,8 @@ package com.example.myapplication.presentation.components.textField
 import java.util.regex.Pattern
 
 private const val EMAIL_VALIDATION_REGEX = "^(.+)@(.+)\$"
+const val EMAIL_EMPTY_ERROR = "Email cannot be empty"
+const val EMAIL_INVALID_ERROR = "Invalid email:"
 
 class EmailState(
     initialValue: String = ""
@@ -18,7 +20,7 @@ private fun isEmailValid(email: String): Boolean {
 
 private fun emailValidationError(email: String): String {
     return when {
-        email.isBlank() -> "Email cannot be empty"
-        else -> "Invalid email: $email"
+        email.isBlank() -> EMAIL_EMPTY_ERROR
+        else -> "$EMAIL_INVALID_ERROR $email"
     }
 }
