@@ -23,7 +23,10 @@ import com.example.myapplication.presentation.theme.ApplicationTheme
 import com.example.myapplication.presentation.ui.BaseActivity
 import com.example.myapplication.presentation.ui.auth.AuthActivity
 import com.example.myapplication.presentation.ui.main.detail.DetailScreen
+import com.example.myapplication.presentation.ui.main.detail.DetailTopAppBar
 import com.example.myapplication.presentation.ui.main.home.HomeScreen
+import com.example.myapplication.presentation.ui.main.home.Region
+import com.example.myapplication.presentation.ui.main.home.SearchAppBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -57,13 +60,25 @@ class MainActivity : BaseActivity() {
                     scaffoldState = scaffoldState,
                     snackbarHost = { scaffoldState.snackbarHostState },
                     topBar = {
-                        MyTopAppBar(
-                            currentRoute = currentRoute,
-                            scope = scope,
-                            scaffoldState = scaffoldState,
-                            popBackStack = { navController.popBackStack() },
-                            openSortMenu = { mainViewModel.sortDialog.value = true }
-                        )
+                        when(currentRoute){
+                            Home.route -> {
+                                SearchAppBar(
+                                    scope = scope,
+                                    scaffoldState = scaffoldState,
+                                    query = mainViewModel.query,
+                                    onQueryChanged = { mainViewModel.onQueryChanged(it) },
+                                    selectedCategory = mainViewModel.selectedCategory,
+                                    onSelectedCategoryChanged = {
+                                        mainViewModel.selectedCategoryChange(Region.valueOf(it))
+                                    }
+                                )
+                            }
+                            else -> {
+                                DetailTopAppBar(
+                                    popBackStack = { navController.popBackStack() }
+                                )
+                            }
+                        }
                     },
                     drawerContent = {
                         Drawer(

@@ -1,12 +1,16 @@
 package com.example.myapplication.presentation.ui.main
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.SettingPreferences.*
 import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.datastore.SettingDataStore
 import com.example.myapplication.interactors.main.MainInteractors
+import com.example.myapplication.model.Country
 import com.example.myapplication.presentation.ui.BaseViewModel
+import com.example.myapplication.presentation.ui.main.home.Region
 import com.example.myapplication.presentation.ui.main.state.MainStateEvent.*
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.DataState
@@ -25,6 +29,7 @@ constructor(
     private val emailDataStore: EmailDataStore
 ) : BaseViewModel<MainViewState>() {
 
+    var countries by mutableStateOf<List<Country>>(emptyList())
     val logoutDialog = mutableStateOf(false)
     val sortDialog = mutableStateOf(false)
     val ascending = mutableStateOf(true)
@@ -37,18 +42,35 @@ constructor(
         }
     }
 
-    fun setAscending(){
+    fun setAscending() {
         ascending.value = true
-        val sorted = viewState.value.countries?.sortedBy { it.name }
-        setViewState(viewState.value.copy(countries = sorted))
+        countries = viewState.value.countries?.sortedBy { it.name }.orEmpty()
         sortDialog.value = false
     }
 
-    fun setDescending(){
+    fun setDescending() {
         ascending.value = false
-        val sorted = viewState.value.countries?.sortedByDescending { it.name }
-        setViewState(viewState.value.copy(countries = sorted))
+        countries = viewState.value.countries?.sortedByDescending { it.name }.orEmpty()
         sortDialog.value = false
+    }
+
+    var query by mutableStateOf("Search")
+
+    fun onQueryChanged(value: String) {
+        query = value
+    }
+
+    var selectedCategory by mutableStateOf(Region.Americas)
+
+    fun selectedCategoryChange(category: Region) {
+        selectedCategory = category
+        val filtered: ArrayList<Country> = ArrayList()
+        for (country in viewState.value.countries.orEmpty()) {
+            if (country.region == selectedCategory) {
+                filtered.add(country)
+            }
+        }
+        countries = filtered
     }
 
     init {
@@ -56,8 +78,9 @@ constructor(
     }
 
     override fun handleNewData(data: MainViewState) {
-        data.countries?.let { countries ->
-            setViewState(viewState.value.copy(countries = countries))
+        data.countries?.let { list ->
+            setViewState(viewState.value.copy(countries = list))
+            countries = list
         }
     }
 

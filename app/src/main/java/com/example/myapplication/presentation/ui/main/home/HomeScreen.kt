@@ -7,7 +7,6 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,22 +20,20 @@ fun HomeScreen(
     viewModel: MainViewModel,
     navController: NavController
 ) {
-    val viewState = viewModel.viewState.collectAsState()
 
-    viewState.value.countries?.let { countries ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 25.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(countries) { country ->
-                CountryCard(
-                    country = country,
-                    onClick = { navController.navigate("Detail/${country.name}") }
-                )
-            }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 25.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        items(viewModel.countries) { country ->
+            CountryCard(
+                country = country,
+                onClick = { navController.navigate("Detail/${country.name}") }
+            )
         }
     }
+
 
     if (viewModel.sortDialog.value) {
         AlertDialog(
