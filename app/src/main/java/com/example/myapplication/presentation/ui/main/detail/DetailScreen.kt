@@ -90,7 +90,7 @@ fun DetailScreen(
 
                 Text(text = "Currencies", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 for (currency in country.currencies){
-                    Text(text = currency.name)
+                    Text(text = currency.name?: "")
                 }
             }
         }
