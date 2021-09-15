@@ -14,11 +14,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object InteractorModule {
 
+    @ViewModelScoped
     @Provides
     fun provideAuthInteractors(
         userDao: UserDao,
@@ -31,7 +34,7 @@ object InteractorModule {
         )
     }
 
-
+    @ViewModelScoped
     @Provides
     fun provideHomeInteractors(
         countriesApi: CountriesApi,

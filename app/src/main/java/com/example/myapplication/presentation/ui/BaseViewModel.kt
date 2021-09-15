@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 
-
 abstract class BaseViewModel<ViewState> : ViewModel() {
 
     private val _viewState by lazy { MutableStateFlow(initViewState()) }
@@ -89,7 +88,6 @@ abstract class BaseViewModel<ViewState> : ViewModel() {
 
     // Channel Scope Functions
     fun cancelActiveJobs() = dataChannelManager.cancelActiveJobs()
-
 
     companion object {
         const val INVALID_STATE_EVENT = "Invalid state event"

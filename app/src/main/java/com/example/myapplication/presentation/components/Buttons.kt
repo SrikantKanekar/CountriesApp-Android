@@ -69,7 +69,7 @@ fun MyButton(
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-            text = text.toUpperCase(Locale.getDefault()),
+            text = text.uppercase(),
             style = typography.button,
             color = MaterialTheme.colors.onPrimary
         )

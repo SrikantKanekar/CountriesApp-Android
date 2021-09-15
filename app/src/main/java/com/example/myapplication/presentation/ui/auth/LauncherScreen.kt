@@ -8,36 +8,33 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.presentation.components.MyTextButton
 import com.example.myapplication.presentation.components.image.LauncherScreenLogo
-import com.example.myapplication.presentation.navigation.Auth
-
+import com.example.myapplication.presentation.navigation.Auth.LoginScreen
+import com.example.myapplication.presentation.navigation.Auth.RegisterScreen
 
 @Composable
 fun LauncherScreen(
     navController: NavHostController
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Spacer(modifier = Modifier.height(150.dp))
+        Spacer(modifier = Modifier.height(170.dp))
 
         LauncherScreenLogo()
 
         MyTextButton(
             modifier = Modifier
                 .padding(top = 50.dp)
-                .padding(bottom = 10.dp),
+                .padding(bottom = 15.dp),
             text = "Login",
-            onClick = { navController.navigate(Auth.LoginScreen.route) }
+            onClick = { navController.navigate(LoginScreen.route) }
         )
 
         MyTextButton(
-            modifier = Modifier.padding(vertical = 10.dp),
             text = "Register",
-            onClick = { navController.navigate(Auth.RegisterScreen.route) }
+            onClick = { navController.navigate(RegisterScreen.route) }
         )
     }
 }

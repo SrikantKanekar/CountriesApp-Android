@@ -3,21 +3,15 @@ package com.example.myapplication.presentation.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.presentation.components.image.AppLogo
-import com.example.myapplication.presentation.navigation.Auth
+import com.example.myapplication.presentation.navigation.Auth.*
 import com.example.myapplication.presentation.theme.ApplicationTheme
 import com.example.myapplication.presentation.ui.BaseActivity
 import com.example.myapplication.presentation.ui.main.MainActivity
@@ -30,8 +24,8 @@ class AuthActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeObservers()
-        setContent {
 
+        setContent {
             val navController = rememberNavController()
             val scaffoldState = rememberScaffoldState()
 
@@ -54,18 +48,18 @@ class AuthActivity : BaseActivity() {
 
                         NavHost(
                             navController = navController,
-                            startDestination = Auth.LauncherScreen.route
+                            startDestination = LauncherScreen.route
                         ) {
 
-                            composable(route = Auth.LauncherScreen.route) {
+                            composable(route = LauncherScreen.route) {
                                 LauncherScreen(navController = navController)
                             }
 
-                            composable(route = Auth.LoginScreen.route) {
+                            composable(route = LoginScreen.route) {
                                 LoginScreen(viewModel = authViewModel)
                             }
 
-                            composable(route = Auth.RegisterScreen.route) {
+                            composable(route = RegisterScreen.route) {
                                 RegisterScreen(viewModel = authViewModel)
                             }
                         }

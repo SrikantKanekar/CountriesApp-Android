@@ -19,9 +19,10 @@ import kotlinx.coroutines.Dispatchers.Main
 
 @SuppressLint("ConflictingOnColor")
 private val LightColorPalette = lightColors(
-    primary = primary,
-    primaryVariant = primaryDark,
-    secondary = primary,
+    primary = blue500,
+    primaryVariant = blue800,
+    secondary = blue500,
+    secondaryVariant = blue800,
     background = background,
     surface = surface,
     error = red500,

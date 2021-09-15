@@ -3,35 +3,32 @@ package com.example.myapplication.presentation.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberDrawerState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import com.example.myapplication.model.Setting
-import com.example.myapplication.presentation.components.Drawer
-import com.example.myapplication.presentation.components.MyButton
-import com.example.myapplication.presentation.navigation.Main
+import com.example.myapplication.presentation.navigation.Main.Home
 import com.example.myapplication.presentation.theme.ApplicationTheme
 import com.example.myapplication.presentation.ui.BaseActivity
 import com.example.myapplication.presentation.ui.auth.AuthActivity
+import com.example.myapplication.presentation.ui.main.detail.DetailScreen
+import com.example.myapplication.presentation.ui.main.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@ExperimentalCoilApi
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +39,7 @@ class MainActivity : BaseActivity() {
             val navController = rememberNavController()
             val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
             val scope = rememberCoroutineScope()
+
             val mainViewModel: MainViewModel = viewModel()
             val settings = mainViewModel.settingFlow.collectAsState(initial = Setting())
 
@@ -55,39 +53,16 @@ class MainActivity : BaseActivity() {
                 stateMessage = mainViewModel.stateMessage.value,
                 removeStateMessage = { mainViewModel.removeStateMessage() }
             ) {
-
                 Scaffold(
                     scaffoldState = scaffoldState,
                     snackbarHost = { scaffoldState.snackbarHostState },
                     topBar = {
-                        TopAppBar(
-                            title = { Text(text = if (currentRoute == "Home") "Countries" else "Country") },
-                            navigationIcon = {
-                                if (currentRoute == "Home") {
-                                    IconButton(onClick = {
-                                        scope.launch {
-                                            scaffoldState.drawerState.open()
-                                        }
-                                    }) {
-                                        Icon(Icons.Filled.Menu, "")
-                                    }
-                                } else {
-                                    IconButton(onClick = {
-                                        navController.popBackStack()
-                                    }) {
-                                        Icon(Icons.Filled.ArrowBack, "")
-                                    }
-                                }
-                            },
-                            actions = {
-                                if (currentRoute == "Home") {
-                                    IconButton(onClick = {
-                                        mainViewModel.sortDialog.value = true
-                                    }) {
-                                        Icon(Icons.Filled.Sort, "")
-                                    }
-                                }
-                            }
+                        MyTopAppBar(
+                            currentRoute = currentRoute,
+                            scope = scope,
+                            scaffoldState = scaffoldState,
+                            popBackStack = { navController.popBackStack() },
+                            openSortMenu = { mainViewModel.sortDialog.value = true }
                         )
                     },
                     drawerContent = {
@@ -95,10 +70,9 @@ class MainActivity : BaseActivity() {
                             scope = scope,
                             scaffoldState = scaffoldState,
                             navController = navController,
+                            currentRoute = currentRoute,
                             theme = settings.value.theme,
-                            toggleTheme = {
-                                mainViewModel.setTheme(it)
-                            },
+                            toggleTheme = { mainViewModel.setTheme(it) },
                             deleteAccount = { mainViewModel.deleteUser() },
                             logout = {
                                 scope.launch {
@@ -112,10 +86,9 @@ class MainActivity : BaseActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = Main.Home.route
+                        startDestination = Home.route
                     ) {
-
-                        composable(route = Main.Home.route) {
+                        composable(route = Home.route) {
                             HomeScreen(
                                 viewModel = mainViewModel,
                                 navController = navController
@@ -130,41 +103,16 @@ class MainActivity : BaseActivity() {
                         }
                     }
 
-                    if (mainViewModel.logoutDialog.value) {
-                        AlertDialog(
-                            modifier = Modifier,
-                            title = { Text(text = "Are You Sure?") },
-                            buttons = {
-                                Spacer(modifier = Modifier.height(30.dp))
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(20.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        10.dp,
-                                        Alignment.End
-                                    ),
-                                ) {
-                                    MyButton(
-                                        text = "Yes",
-                                        onClick = {
-                                            mainViewModel.logoutDialog.value = false
-                                            mainViewModel.logout()
-                                        },
-                                    )
-                                    MyButton(
-                                        text = "Cancel",
-                                        onClick = {
-                                            mainViewModel.logoutDialog.value = false
-                                        },
-                                    )
-                                }
-                            },
-                            onDismissRequest = {
-                                mainViewModel.logoutDialog.value = false
-                            }
-                        )
-                    }
+                    LogoutDialog(
+                        visible = mainViewModel.logoutDialog.value,
+                        logout = {
+                            mainViewModel.logoutDialog.value = false
+                            mainViewModel.logout()
+                        },
+                        dismiss = {
+                            mainViewModel.logoutDialog.value = false
+                        }
+                    )
                 }
             }
         }

@@ -17,11 +17,9 @@ fun LauncherScreenLogo() {
 @Composable
 fun AppLogo(
     modifier: Modifier = Modifier,
-    size: Dp = 110.dp
+    size: Dp = 120.dp
 ) {
-
     val painterResource = painterResource(R.drawable.ic_launcher_round)
-
     Image(
         modifier = modifier.requiredSize(size),
         painter = painterResource,

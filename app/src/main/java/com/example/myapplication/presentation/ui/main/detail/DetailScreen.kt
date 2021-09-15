@@ -1,6 +1,5 @@
-package com.example.myapplication.presentation.ui.main
+package com.example.myapplication.presentation.ui.main.detail
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,9 +16,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
+import com.example.myapplication.presentation.ui.main.MainViewModel
 
+@ExperimentalCoilApi
 @Composable
 fun DetailScreen(
     name: String,

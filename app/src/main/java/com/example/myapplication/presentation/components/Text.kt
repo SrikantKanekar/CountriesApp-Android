@@ -10,59 +10,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ProfileDetailText(
-    modifier: Modifier = Modifier,
-    text: String,
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        style = MaterialTheme.typography.caption,
-        overflow = TextOverflow.Ellipsis,
-        maxLines = 1
-    )
-}
-
-@Composable
-fun MyValueText(
-    modifier: Modifier = Modifier,
-    text: String
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        style = MaterialTheme.typography.body2
-    )
-}
-
-@Composable
-fun MyOverlineText(
-    modifier: Modifier = Modifier,
-    text: String,
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        fontSize = 18.sp,
-        style = MaterialTheme.typography.overline
-    )
-}
-
-@Composable
-fun MyLinkText(
-    modifier: Modifier = Modifier,
-    text: String
-) {
-    Text(
-        modifier = modifier,
-        text = text,
-        color = MaterialTheme.colors.primary,
-        fontSize = 12.sp,
-        style = MaterialTheme.typography.overline
-    )
-}
-
-@Composable
 fun MyFormTitle(
     modifier: Modifier = Modifier,
     text: String

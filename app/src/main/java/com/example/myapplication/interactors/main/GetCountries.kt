@@ -24,7 +24,6 @@ class GetCountries(
             stateEvent = null
         ) {
             override suspend fun handleSuccess(resultObj: List<Country>): DataState<MainViewState> {
-                print(resultObj.toString())
                 return DataState.data(
                     response = Response(
                         message = "Successfully fetched countries",

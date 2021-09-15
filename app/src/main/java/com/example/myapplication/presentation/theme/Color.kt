@@ -3,7 +3,7 @@ package com.example.myapplication.presentation.theme
 import androidx.compose.ui.graphics.Color
 
 val blue300 = Color(0xFF59ADF0)
-val blue500 = Color(0xFF309EF7)
+val blue500 = Color(0xFF3DA5F8)
 val blue800 = Color(0xFF1A6DCA)
 
 val red300 = Color(0xFFCF6679)

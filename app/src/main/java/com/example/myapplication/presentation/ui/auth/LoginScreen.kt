@@ -18,7 +18,6 @@ import com.example.myapplication.presentation.components.textField.MyEmailTextFi
 import com.example.myapplication.presentation.components.textField.MyPasswordTextField
 import com.example.myapplication.presentation.components.textField.PasswordState
 
-
 @Composable
 fun LoginScreen(
     viewModel: AuthViewModel
@@ -31,7 +30,7 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Spacer(modifier = Modifier.height(170.dp))
+        Spacer(modifier = Modifier.height(200.dp))
 
         MyFormTitle(text = "Login")
 

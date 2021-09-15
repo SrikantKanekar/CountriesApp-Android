@@ -8,18 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MyLinkTextButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit
-) {
-    MyLinkText(
-        modifier = modifier.clickable { onClick() },
-        text = text
-    )
-}
-
-@Composable
 fun MyTextButton(
     modifier: Modifier = Modifier,
     text: String,

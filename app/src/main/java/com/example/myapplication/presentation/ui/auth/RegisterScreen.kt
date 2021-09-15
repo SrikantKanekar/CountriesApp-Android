@@ -15,7 +15,6 @@ import com.example.myapplication.presentation.components.LoadingButton
 import com.example.myapplication.presentation.components.MyFormTitle
 import com.example.myapplication.presentation.components.textField.*
 
-
 @Composable
 fun RegisterScreen(
     viewModel: AuthViewModel
@@ -28,7 +27,7 @@ fun RegisterScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(130.dp))
 
         MyFormTitle(text = "Register")
 
