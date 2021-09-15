@@ -2,8 +2,6 @@ package com.example.myapplication.interactors.main
 
 import com.example.myapplication.database.dao.UserDao
 import com.example.myapplication.datastore.EmailDataStore
-import com.example.myapplication.model.Country
-import com.example.myapplication.network.CountriesApi
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -21,7 +19,7 @@ class DeleteUser(
     ): Flow<DataState<MainViewState>?> = flow {
 
         val email = emailDataStore.preferenceFlow.first()
-        emailDataStore.updateAuthenticatedUserEmail("")
+        emailDataStore.updateUserEmail("")
 
         val cacheResult = safeCacheCall(IO) {
             userDao.deleteByEmail(email!!)

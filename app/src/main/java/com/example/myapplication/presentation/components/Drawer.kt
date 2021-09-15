@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.myapplication.R
+import com.example.myapplication.SettingPreferences
+import com.example.myapplication.SettingPreferences.*
+import com.example.myapplication.SettingPreferences.Theme.*
 import com.example.myapplication.presentation.navigation.Main
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -22,6 +26,8 @@ fun Drawer(
     scope: CoroutineScope,
     scaffoldState: ScaffoldState,
     navController: NavController,
+    theme: Theme,
+    toggleTheme: (Theme) -> Unit,
     deleteAccount: () -> Unit,
     logout: () -> Unit,
 ) {
@@ -60,6 +66,26 @@ fun Drawer(
             Text(
                 text = "Home",
                 fontSize = 18.sp
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp)
+                .padding(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Theme",
+                fontSize = 18.sp
+            )
+            Switch(
+                checked = theme == DARK,
+                onCheckedChange = {
+                    toggleTheme(if (it) DARK else LIGHT)
+                }
             )
         }
 

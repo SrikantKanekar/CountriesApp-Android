@@ -1,13 +1,17 @@
 package com.example.myapplication.datastore
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.preferencesDataStore
+import com.example.myapplication.datastore.EmailDataStore.PreferenceKeys.AUTHENTICATED_USER_EMAIL
 import com.example.myapplication.presentation.ui.BaseApplication
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.io.IOException
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,27 +19,20 @@ import javax.inject.Singleton
 class EmailDataStore
 @Inject
 constructor(
-    app: BaseApplication
+    private val application: BaseApplication
 ) {
+    private val Context.emailDataStore: DataStore<Preferences> by preferencesDataStore(name = "EMAIL_DATASTORE_FILE")
 
-    private val dataStore = app.createDataStore("EMAIL_DATASTORE_FILE")
-
-    val preferenceFlow = dataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }
+    val preferenceFlow: Flow<String> = application.emailDataStore.data
         .map { preferences ->
-            val email = preferences[PreferenceKeys.AUTHENTICATED_USER_EMAIL]
-            email
+            preferences[AUTHENTICATED_USER_EMAIL] ?: ""
         }
 
-    suspend fun updateAuthenticatedUserEmail(email: String) {
-        dataStore.edit { preferences ->
-            preferences[PreferenceKeys.AUTHENTICATED_USER_EMAIL] = email
+    suspend fun updateUserEmail(email: String) {
+        withContext(IO){
+            application.emailDataStore.edit { preferences ->
+                preferences[AUTHENTICATED_USER_EMAIL] = email
+            }
         }
     }
 

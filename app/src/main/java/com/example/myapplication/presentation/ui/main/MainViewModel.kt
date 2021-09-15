@@ -1,6 +1,10 @@
 package com.example.myapplication.presentation.ui.main
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
+import com.example.myapplication.SettingPreferences
+import com.example.myapplication.SettingPreferences.*
+import com.example.myapplication.datastore.SettingDataStore
 import com.example.myapplication.interactors.main.MainInteractors
 import com.example.myapplication.presentation.ui.BaseViewModel
 import com.example.myapplication.presentation.ui.main.state.MainStateEvent
@@ -11,6 +15,7 @@ import com.example.myapplication.utils.SessionManager
 import com.example.myapplication.utils.StateEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,12 +23,21 @@ class MainViewModel
 @Inject
 constructor(
     private val sessionManager: SessionManager,
-    private val mainInteractors: MainInteractors
+    private val mainInteractors: MainInteractors,
+    private val settingDataStore: SettingDataStore
 ) : BaseViewModel<MainViewState>() {
 
     val logoutDialog = mutableStateOf(false)
     val sortDialog = mutableStateOf(false)
     val ascending = mutableStateOf(true)
+
+    val settingFlow = settingDataStore.settingFlow
+
+    fun setTheme(theme: Theme) {
+        viewModelScope.launch {
+            settingDataStore.updateTheme(theme)
+        }
+    }
 
     fun setAscending(){
         ascending.value = true

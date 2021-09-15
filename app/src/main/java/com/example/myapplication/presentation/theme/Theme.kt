@@ -2,13 +2,14 @@ package com.example.myapplication.presentation.theme
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.example.myapplication.SettingPreferences.Theme
+import com.example.myapplication.SettingPreferences.Theme.DARK
 import com.example.myapplication.presentation.components.MyCircularProgressIndicator
 import com.example.myapplication.presentation.components.snackbar.SnackbarController
 import com.example.myapplication.presentation.components.stateMessageHandler.HandleMessageUiType
@@ -49,21 +50,17 @@ val snackbarController = SnackbarController(CoroutineScope(Main))
 
 @Composable
 fun ApplicationTheme(
-    darkTheme: Boolean,
+    theme: Theme,
     displayProgressBar: Boolean = false,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     stateMessage: StateMessage? = null,
     removeStateMessage: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+    val colours = if (theme == DARK) DarkColorPalette else LightColorPalette
 
     MaterialTheme(
-        colors = colors,
+        colors = colours,
         typography = Typography,
         shapes = Shapes
     ) {

@@ -1,6 +1,5 @@
 package com.example.myapplication.interactors.auth
 
-import com.example.myapplication.database.dao.TokenDao
 import com.example.myapplication.database.dao.UserDao
 import com.example.myapplication.database.entity.Token
 import com.example.myapplication.datastore.EmailDataStore
@@ -53,7 +52,7 @@ class AttemptLogin(
                 "token"
             )
 
-            emailDataStore.updateAuthenticatedUserEmail(email)
+            emailDataStore.updateUserEmail(email)
 
             emit(
                 DataState.data(

@@ -103,7 +103,7 @@ class AttemptRegistration(
             }
 
             // Save email
-            emailDataStore.updateAuthenticatedUserEmail(email)
+            emailDataStore.updateUserEmail(email)
 
             emit(
                 DataState.data(

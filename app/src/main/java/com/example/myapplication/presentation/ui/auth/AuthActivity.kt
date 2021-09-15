@@ -41,7 +41,7 @@ class AuthActivity : BaseActivity() {
             val viewState = authViewModel.viewState.collectAsState()
 
             ApplicationTheme(
-                darkTheme = isDark.value,
+                theme = appTheme,
                 displayProgressBar = authViewModel.shouldDisplayProgressBar.value,
                 scaffoldState = scaffoldState,
                 stateMessage = authViewModel.stateMessage.value,
