@@ -27,8 +27,6 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
 
-    private val viewModel: AuthViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeObservers()
@@ -72,12 +70,6 @@ class AuthActivity : BaseActivity() {
                             }
                         }
                     }
-                } else {
-                    Box(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        AppLogo(modifier = Modifier.align(Alignment.Center))
-                    }
                 }
             }
         }
@@ -85,19 +77,10 @@ class AuthActivity : BaseActivity() {
 
     private fun subscribeObservers() {
         lifecycleScope.launchWhenStarted {
-            viewModel.viewState.collect { viewState ->
-                viewState.token?.let {
-                    sessionManager.login(it)
-                }
+            emailDataStore.preferenceFlow.collect { email ->
+                if (email.isNotBlank()) navMainActivity()
             }
         }
-        sessionManager.cachedToken.observe(this, { token ->
-            token.let { authToken ->
-                if (authToken != null && authToken.account_pk != -1 && authToken.token != null) {
-                    navMainActivity()
-                }
-            }
-        })
     }
 
     private fun navMainActivity() {

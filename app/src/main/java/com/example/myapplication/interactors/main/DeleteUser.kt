@@ -1,6 +1,6 @@
 package com.example.myapplication.interactors.main
 
-import com.example.myapplication.database.dao.UserDao
+import com.example.myapplication.database.UserDao
 import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.*
@@ -22,7 +22,7 @@ class DeleteUser(
         emailDataStore.updateUserEmail("")
 
         val cacheResult = safeCacheCall(IO) {
-            userDao.deleteByEmail(email!!)
+            userDao.deleteByEmail(email)
         }
         val response = object : CacheResponseHandler<MainViewState, Unit>(
             response = cacheResult,

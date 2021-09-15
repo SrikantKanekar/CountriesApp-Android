@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,14 +29,16 @@ import com.example.myapplication.presentation.theme.ApplicationTheme
 import com.example.myapplication.presentation.ui.BaseActivity
 import com.example.myapplication.presentation.ui.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
+        subscribeObservers()
 
+        setContent {
             val navController = rememberNavController()
             val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
             val scope = rememberCoroutineScope()
@@ -167,17 +170,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        subscribeObservers()
-    }
-
     private fun subscribeObservers() {
-        sessionManager.cachedToken.observe(this, { authToken ->
-            if (authToken == null || authToken.account_pk == -1 || authToken.token == null) {
-                navAuthActivity()
+        lifecycleScope.launchWhenStarted {
+            emailDataStore.preferenceFlow.collect { email ->
+                if (email.isBlank()) navAuthActivity()
             }
-        })
+        }
     }
 
     private fun navAuthActivity() {

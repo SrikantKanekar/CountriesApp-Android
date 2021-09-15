@@ -1,7 +1,6 @@
 package com.example.myapplication.di
 
-import com.example.myapplication.database.dao.TokenDao
-import com.example.myapplication.database.dao.UserDao
+import com.example.myapplication.database.UserDao
 import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.interactors.auth.AttemptLogin
 import com.example.myapplication.interactors.auth.AttemptRegistration
@@ -22,14 +21,13 @@ object InteractorModule {
 
     @Provides
     fun provideAuthInteractors(
-        tokenDao: TokenDao,
         userDao: UserDao,
         emailDataStore: EmailDataStore
     ): AuthInteractors {
         return AuthInteractors(
             AttemptLogin(userDao, emailDataStore),
-            AttemptRegistration(tokenDao, userDao, emailDataStore),
-            CheckPreviousUser(tokenDao, userDao, emailDataStore)
+            AttemptRegistration(userDao, emailDataStore),
+            CheckPreviousUser(userDao, emailDataStore)
         )
     }
 

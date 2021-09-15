@@ -22,9 +22,6 @@ constructor(
     }
 
     override fun handleNewData(data: AuthViewState) {
-        data.token?.let { token ->
-            setViewState(viewState.value.copy(token = token))
-        }
         data.previousUserCheck?.let { checked ->
             setViewState(viewState.value.copy(previousUserCheck = checked))
         }

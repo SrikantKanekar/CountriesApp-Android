@@ -5,10 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
-import com.example.myapplication.SettingPreferences
 import com.example.myapplication.SettingPreferences.Theme.*
+import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.datastore.SettingDataStore
-import com.example.myapplication.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -17,7 +16,7 @@ import javax.inject.Inject
 abstract class BaseActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var sessionManager: SessionManager
+    lateinit var emailDataStore: EmailDataStore
 
     @Inject
     lateinit var settingDataStore: SettingDataStore
@@ -31,4 +30,5 @@ abstract class BaseActivity : AppCompatActivity() {
                 appTheme = setting.theme
             }
         }
-    }}
+    }
+}

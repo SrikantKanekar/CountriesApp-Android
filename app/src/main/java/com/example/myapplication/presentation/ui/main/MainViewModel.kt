@@ -2,16 +2,14 @@ package com.example.myapplication.presentation.ui.main
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.SettingPreferences
 import com.example.myapplication.SettingPreferences.*
+import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.datastore.SettingDataStore
 import com.example.myapplication.interactors.main.MainInteractors
 import com.example.myapplication.presentation.ui.BaseViewModel
-import com.example.myapplication.presentation.ui.main.state.MainStateEvent
 import com.example.myapplication.presentation.ui.main.state.MainStateEvent.*
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.DataState
-import com.example.myapplication.utils.SessionManager
 import com.example.myapplication.utils.StateEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -22,9 +20,9 @@ import javax.inject.Inject
 class MainViewModel
 @Inject
 constructor(
-    private val sessionManager: SessionManager,
     private val mainInteractors: MainInteractors,
-    private val settingDataStore: SettingDataStore
+    private val settingDataStore: SettingDataStore,
+    private val emailDataStore: EmailDataStore
 ) : BaseViewModel<MainViewState>() {
 
     val logoutDialog = mutableStateOf(false)
@@ -87,12 +85,13 @@ constructor(
     }
 
     fun deleteUser() {
-        sessionManager.logout()
         setStateEvent(DeleteUserEvent)
     }
 
     fun logout() {
-        sessionManager.logout()
+        viewModelScope.launch {
+            emailDataStore.updateUserEmail("")
+        }
     }
 
     override fun onCleared() {
