@@ -1,12 +1,12 @@
 package com.example.myapplication.model
 
-import com.example.myapplication.presentation.ui.main.home.Region
+import com.example.myapplication.model.enums.SortFilterRegion
 
 data class Country(
     val name: String,
     val capital: String,
     val flag: String,
-    val region: Region,
+    val region: SortFilterRegion,
     val population: Long,
     val area: Double,
     val alpha3Code: String,

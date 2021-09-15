@@ -9,8 +9,13 @@ import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.datastore.SettingDataStore
 import com.example.myapplication.interactors.main.MainInteractors
 import com.example.myapplication.model.Country
+import com.example.myapplication.model.enums.SortFilter
+import com.example.myapplication.model.enums.SortFilter.*
 import com.example.myapplication.presentation.ui.BaseViewModel
-import com.example.myapplication.presentation.ui.main.home.Region
+import com.example.myapplication.model.enums.SortFilterRegion
+import com.example.myapplication.model.enums.SortFilterRegion.*
+import com.example.myapplication.model.enums.SortOptions
+import com.example.myapplication.model.enums.SortOptions.*
 import com.example.myapplication.presentation.ui.main.state.MainStateEvent.*
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.DataState
@@ -31,47 +36,6 @@ constructor(
 
     var countries by mutableStateOf<List<Country>>(emptyList())
     val logoutDialog = mutableStateOf(false)
-    val sortDialog = mutableStateOf(false)
-    val ascending = mutableStateOf(true)
-
-    val settingFlow = settingDataStore.settingFlow
-
-    fun setTheme(theme: Theme) {
-        viewModelScope.launch {
-            settingDataStore.updateTheme(theme)
-        }
-    }
-
-    fun setAscending() {
-        ascending.value = true
-        countries = viewState.value.countries?.sortedBy { it.name }.orEmpty()
-        sortDialog.value = false
-    }
-
-    fun setDescending() {
-        ascending.value = false
-        countries = viewState.value.countries?.sortedByDescending { it.name }.orEmpty()
-        sortDialog.value = false
-    }
-
-    var query by mutableStateOf("Search")
-
-    fun onQueryChanged(value: String) {
-        query = value
-    }
-
-    var selectedCategory by mutableStateOf(Region.Americas)
-
-    fun selectedCategoryChange(category: Region) {
-        selectedCategory = category
-        val filtered: ArrayList<Country> = ArrayList()
-        for (country in viewState.value.countries.orEmpty()) {
-            if (country.region == selectedCategory) {
-                filtered.add(country)
-            }
-        }
-        countries = filtered
-    }
 
     init {
         setStateEvent(GetCountriesEvent)
@@ -107,6 +71,95 @@ constructor(
         return MainViewState()
     }
 
+    // App bar
+    var expanded by mutableStateOf(false)
+
+    fun toggleAppBar(value: Boolean){
+        expanded = value
+    }
+
+    // Search
+    var query by mutableStateOf("")
+
+    fun onQueryChanged(value: String) {
+        query = value
+        resetAppBar()
+        countries = viewState.value.countries?.filter {
+            it.name.startsWith(prefix = value, ignoreCase = true)
+        }.orEmpty()
+    }
+
+    // Sorting options
+    var sortOptions by mutableStateOf(Name)
+
+    fun handleSortOptionChange(option: SortOptions){
+        sortOptions = option
+        resetFilters()
+
+        val list = viewState.value.countries.orEmpty()
+        when(option){
+            Name -> list.sortedBy { it.name }
+            Region -> list.filter { it.region == Africa }
+            Population -> list.sortedBy { it.population }
+            Area -> list.sortedBy { it.area }
+        }
+    }
+
+    // filter
+    var sortFilter by mutableStateOf(Ascending)
+
+    fun handleSortFilterChange(filter: SortFilter) {
+        sortFilter = filter
+        val list = viewState.value.countries.orEmpty()
+        countries = when(filter){
+            Ascending -> {
+                when(sortOptions){
+                    Name -> list.sortedBy { it.name }
+                    Region -> list
+                    Population -> list.sortedBy { it.population }
+                    Area -> list.sortedBy { it.area }
+                }
+            }
+            Descending -> {
+                when(sortOptions){
+                    Name -> list.sortedByDescending { it.name }
+                    Region -> list
+                    Population -> list.sortedByDescending { it.population }
+                    Area -> list.sortedByDescending { it.area }
+                }
+            }
+        }
+    }
+
+    // Region Sorting
+    var sortFilterRegion by mutableStateOf(Africa)
+
+    fun handleSortFilterRegionChange(region: SortFilterRegion) {
+        sortFilterRegion = region
+        val list = viewState.value.countries.orEmpty()
+        countries = list.filter { it.region == region }
+    }
+
+    private fun resetAppBar(){
+        expanded = false
+        sortOptions = Name
+        resetFilters()
+    }
+
+    private fun resetFilters(){
+        sortFilter = Ascending
+        sortFilterRegion = Africa
+    }
+
+    // Theme
+    val settingFlow = settingDataStore.settingFlow
+
+    fun setTheme(theme: Theme) {
+        viewModelScope.launch {
+            settingDataStore.updateTheme(theme)
+        }
+    }
+
     fun deleteUser() {
         setStateEvent(DeleteUserEvent)
     }
@@ -115,10 +168,5 @@ constructor(
         viewModelScope.launch {
             emailDataStore.updateUserEmail("")
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        cancelActiveJobs()
     }
 }

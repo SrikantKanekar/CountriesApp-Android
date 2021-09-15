@@ -18,6 +18,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.myapplication.model.Setting
+import com.example.myapplication.model.enums.SortFilter
 import com.example.myapplication.presentation.navigation.Main.Home
 import com.example.myapplication.presentation.theme.ApplicationTheme
 import com.example.myapplication.presentation.ui.BaseActivity
@@ -25,7 +26,8 @@ import com.example.myapplication.presentation.ui.auth.AuthActivity
 import com.example.myapplication.presentation.ui.main.detail.DetailScreen
 import com.example.myapplication.presentation.ui.main.detail.DetailTopAppBar
 import com.example.myapplication.presentation.ui.main.home.HomeScreen
-import com.example.myapplication.presentation.ui.main.home.Region
+import com.example.myapplication.model.enums.SortFilterRegion
+import com.example.myapplication.model.enums.SortOptions
 import com.example.myapplication.presentation.ui.main.home.SearchAppBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -65,11 +67,21 @@ class MainActivity : BaseActivity() {
                                 SearchAppBar(
                                     scope = scope,
                                     scaffoldState = scaffoldState,
+                                    expanded = mainViewModel.expanded,
+                                    toggleAppBar = { mainViewModel.toggleAppBar(it) },
                                     query = mainViewModel.query,
                                     onQueryChanged = { mainViewModel.onQueryChanged(it) },
-                                    selectedCategory = mainViewModel.selectedCategory,
-                                    onSelectedCategoryChanged = {
-                                        mainViewModel.selectedCategoryChange(Region.valueOf(it))
+                                    selectedOption = mainViewModel.sortOptions,
+                                    onSelectedOptionChanged = {
+                                        mainViewModel.handleSortOptionChange(SortOptions.valueOf(it))
+                                    },
+                                    selectedFilter = mainViewModel.sortFilter,
+                                    onSelectedFilterChanged = {
+                                        mainViewModel.handleSortFilterChange(SortFilter.valueOf(it))
+                                    },
+                                    selectedFilterRegion = mainViewModel.sortFilterRegion,
+                                    onSelectedFilterRegionChanged = {
+                                        mainViewModel.handleSortFilterRegionChange(SortFilterRegion.valueOf(it))
                                     }
                                 )
                             }

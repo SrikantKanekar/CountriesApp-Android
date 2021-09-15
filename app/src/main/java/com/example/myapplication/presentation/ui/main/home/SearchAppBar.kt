@@ -25,6 +25,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.model.enums.SortFilter
+import com.example.myapplication.model.enums.SortFilterRegion
+import com.example.myapplication.model.enums.SortOptions
 import com.example.myapplication.presentation.theme.primaryLight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -33,16 +36,20 @@ import kotlinx.coroutines.launch
 fun SearchAppBar(
     scope: CoroutineScope,
     scaffoldState: ScaffoldState,
+    expanded: Boolean,
+    toggleAppBar: (Boolean) -> Unit,
     query: String,
     onQueryChanged: (String) -> Unit,
     onExecuteSearch: () -> Unit = {},
-    selectedCategory: Region,
-    onSelectedCategoryChanged: (String) -> Unit,
+    selectedOption: SortOptions,
+    onSelectedOptionChanged: (String) -> Unit,
+    selectedFilter: SortFilter,
+    onSelectedFilterChanged: (String) -> Unit,
+    selectedFilterRegion: SortFilterRegion,
+    onSelectedFilterRegionChanged: (String) -> Unit,
 ) {
 
     val focusManager = LocalFocusManager.current
-
-    var expanded by remember { mutableStateOf(false) }
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -95,25 +102,57 @@ fun SearchAppBar(
                 IconButton(
                     modifier = Modifier.padding(2.dp),
                     onClick = {
-                        expanded = !expanded
+                        toggleAppBar(!expanded)
                     },
                 ) {
                     Icon(Icons.Default.Tune, contentDescription = "Sort")
                 }
             }
             if (expanded) {
-                val scrollState = rememberLazyListState()
+                val optionScrollState = rememberLazyListState()
                 LazyRow(
                     modifier = Modifier.padding(bottom = 8.dp),
-                    state = scrollState
+                    state = optionScrollState
                 ) {
-                    items(Region.values()) { region ->
+                    items(SortOptions.values()) { options ->
                         SortChip(
-                            category = region.name,
-                            isSelected = selectedCategory == region,
-                            onSelectedCategoryChanged = onSelectedCategoryChanged,
+                            category = options.name,
+                            isSelected = selectedOption == options,
+                            onSelectedCategoryChanged = onSelectedOptionChanged,
                             onExecuteSearch = onExecuteSearch,
                         )
+                    }
+                }
+
+                if (selectedOption == SortOptions.Region){
+                    val regionScrollState = rememberLazyListState()
+                    LazyRow(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        state = regionScrollState
+                    ) {
+                        items(SortFilterRegion.values()) { region ->
+                            SortChip(
+                                category = region.name,
+                                isSelected = selectedFilterRegion == region,
+                                onSelectedCategoryChanged = onSelectedFilterRegionChanged,
+                                onExecuteSearch = onExecuteSearch,
+                            )
+                        }
+                    }
+                } else {
+                    val filterScrollState = rememberLazyListState()
+                    LazyRow(
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        state = filterScrollState
+                    ) {
+                        items(SortFilter.values()) { filter ->
+                            SortChip(
+                                category = filter.name,
+                                isSelected = selectedFilter == filter,
+                                onSelectedCategoryChanged = onSelectedFilterChanged,
+                                onExecuteSearch = onExecuteSearch,
+                            )
+                        }
                     }
                 }
             }
