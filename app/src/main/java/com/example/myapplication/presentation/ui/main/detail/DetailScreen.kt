@@ -16,13 +16,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
 import com.example.myapplication.SettingPreferences.Theme
+import com.example.myapplication.presentation.components.DataText
+import com.example.myapplication.presentation.components.TitleText
 import com.example.myapplication.presentation.ui.main.MainViewModel
 
 @ExperimentalCoilApi
@@ -61,7 +62,7 @@ fun DetailScreen(
             Column(
                 modifier = Modifier
                     .padding(horizontal = 20.dp)
-                    .padding(vertical = 20.dp)
+                    .padding(vertical = 25.dp)
             ) {
 
                 Text(
@@ -71,64 +72,42 @@ fun DetailScreen(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-
-                Text(
-                    modifier = Modifier.padding(start = 2.dp),
-                    text = country.capital,
-                    style = MaterialTheme.typography.body1
-                )
+                DataText(text = country.capital)
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                Text(text = "Languages", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                TitleText(text = "Native Languages")
                 for (lang in country.languages) {
-                    Text(text = lang.name)
+                    DataText(text = lang.name)
                 }
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                Text(text = "Currencies", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                TitleText(text = if (country.currencies.size > 1) "Currencies" else "Currency")
                 for (currency in country.currencies) {
-                    Text(text = currency.name ?: "")
+                    if (currency.name != null) DataText(text = "${currency.symbol} ${currency.name}")
                 }
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                Text(
-                    text = "Region : ${country.region}",
-                    style = MaterialTheme.typography.body1
-                )
-
-                Text(
-                    text = "population : ${country.population}",
-                    style = MaterialTheme.typography.body1
-                )
-
-                Text(
-                    text = "alpha3Code : ${country.alpha3Code}",
-                    style = MaterialTheme.typography.body1
-                )
-
-                Text(
-                    text = "area : ${country.area.toLong()} sq Km",
-                    style = MaterialTheme.typography.body1
-                )
+                TitleText(text = "Geographical data")
+                DataText(text = "Region : ${country.region}")
+                DataText(text = "Population : ${country.population}")
+                DataText(text = "Area : ${country.area.toLong()} Km²")
             }
 
             if (country.borders.isNotEmpty()) {
-                Text(
+                TitleText(
                     modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
-                    text = "Neighbours",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "Neighbouring Countries",
                 )
                 LazyRow(
                     contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 35.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    val neighbours =
-                        viewState.value.countries?.filter { country.borders.contains(it.alpha3Code) }
-                            .orEmpty()
+                    val neighbours = viewState.value.countries
+                        ?.filter { country.borders.contains(it.alpha3Code) }
+                        .orEmpty()
                     items(neighbours) { neighbour ->
                         NeighbourCard(
                             country = neighbour,

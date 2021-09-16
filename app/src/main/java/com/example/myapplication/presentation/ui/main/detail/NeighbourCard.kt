@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -72,6 +73,7 @@ fun NeighbourCard(
                 )
                 Text(
                     text = country.capital,
+                    fontSize = 11.sp,
                     style = MaterialTheme.typography.subtitle2,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
