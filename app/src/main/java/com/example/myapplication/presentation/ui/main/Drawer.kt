@@ -9,9 +9,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import com.example.myapplication.R
 import com.example.myapplication.SettingPreferences.*
@@ -71,6 +74,22 @@ fun Drawer(
                         toggleTheme(if (it) DARK else LIGHT)
                     }
                 )
+            }
+        )
+
+        val context = LocalContext.current
+
+        DrawerItem(
+            name = "Test Notification",
+            onClick = {
+                val builder = NotificationCompat.Builder(context, "1")
+                    .setSmallIcon(R.drawable.ic_launcher_round)
+                    .setContentTitle("Test notification")
+                    .setContentText("This is a test notification")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                with(NotificationManagerCompat.from(context)) {
+                    notify(1, builder.build())
+                }
             }
         )
 
