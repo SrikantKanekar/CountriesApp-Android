@@ -10,13 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
+import com.example.myapplication.SettingPreferences
+import com.example.myapplication.SettingPreferences.*
 import com.example.myapplication.presentation.ui.main.MainViewModel
 
 @ExperimentalCoilApi
 @Composable
 fun HomeScreen(
     viewModel: MainViewModel,
-    navController: NavController
+    navController: NavController,
+    appTheme: Theme
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -26,7 +29,8 @@ fun HomeScreen(
         items(viewModel.countries) { country ->
             CountryCard(
                 country = country,
-                onClick = { navController.navigate("Detail/${country.name}") }
+                onClick = { navController.navigate("Detail/${country.name}") },
+                appTheme = appTheme
             )
         }
     }

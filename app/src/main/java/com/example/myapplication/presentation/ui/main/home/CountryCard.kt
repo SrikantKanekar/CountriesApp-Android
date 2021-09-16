@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.ui.main.home
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -18,12 +20,16 @@ import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
+import com.example.myapplication.SettingPreferences
+import com.example.myapplication.SettingPreferences.*
+import com.example.myapplication.SettingPreferences.Theme.*
 import com.example.myapplication.model.Country
 
 @ExperimentalCoilApi
 @Composable
 fun CountryCard(
     country: Country,
+    appTheme: Theme,
     onClick: () -> Unit
 ) {
     Card(
@@ -31,7 +37,7 @@ fun CountryCard(
             .fillMaxWidth()
             .clickable { onClick() },
         shape = MaterialTheme.shapes.large,
-        elevation = 0.dp
+        elevation = if (appTheme == DARK) 4.dp else 0.dp
     ) {
         Row(
             modifier = Modifier.padding(12.dp)

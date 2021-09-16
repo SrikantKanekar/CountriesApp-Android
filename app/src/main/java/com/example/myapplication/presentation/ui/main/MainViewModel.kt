@@ -74,8 +74,14 @@ constructor(
     // App bar
     var expanded by mutableStateOf(false)
 
-    fun toggleAppBar(value: Boolean){
+    fun toggleAppBar(value: Boolean) {
         expanded = value
+        if (value){
+            query = ""
+            resetFilters()
+            sortOptions = Name
+            countries = viewState.value.countries?.sortedBy { it.name }.orEmpty()
+        }
     }
 
     // Search
@@ -92,12 +98,12 @@ constructor(
     // Sorting options
     var sortOptions by mutableStateOf(Name)
 
-    fun handleSortOptionChange(option: SortOptions){
+    fun handleSortOptionChange(option: SortOptions) {
         sortOptions = option
         resetFilters()
 
         val list = viewState.value.countries.orEmpty()
-        when(option){
+        countries = when (option) {
             Name -> list.sortedBy { it.name }
             Region -> list.filter { it.region == Africa }
             Population -> list.sortedBy { it.population }
@@ -111,9 +117,9 @@ constructor(
     fun handleSortFilterChange(filter: SortFilter) {
         sortFilter = filter
         val list = viewState.value.countries.orEmpty()
-        countries = when(filter){
+        countries = when (filter) {
             Ascending -> {
-                when(sortOptions){
+                when (sortOptions) {
                     Name -> list.sortedBy { it.name }
                     Region -> list
                     Population -> list.sortedBy { it.population }
@@ -121,7 +127,7 @@ constructor(
                 }
             }
             Descending -> {
-                when(sortOptions){
+                when (sortOptions) {
                     Name -> list.sortedByDescending { it.name }
                     Region -> list
                     Population -> list.sortedByDescending { it.population }
@@ -140,15 +146,15 @@ constructor(
         countries = list.filter { it.region == region }
     }
 
-    private fun resetAppBar(){
+    private fun resetAppBar() {
         expanded = false
         sortOptions = Name
         resetFilters()
     }
 
-    private fun resetFilters(){
-        sortFilter = Ascending
+    private fun resetFilters() {
         sortFilterRegion = Africa
+        sortFilter = Ascending
     }
 
     // Theme

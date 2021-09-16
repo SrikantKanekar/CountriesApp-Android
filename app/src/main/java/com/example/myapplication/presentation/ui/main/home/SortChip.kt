@@ -1,5 +1,7 @@
 package com.example.myapplication.presentation.ui.main.home
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -8,13 +10,19 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.myapplication.SettingPreferences
+import com.example.myapplication.SettingPreferences.*
 import com.example.myapplication.presentation.theme.primary
 import com.example.myapplication.presentation.theme.primaryExtraLight
 import com.example.myapplication.presentation.theme.surface
 
 @Composable
 fun SortChip(
+    appTheme: Theme,
     category: String,
     isSelected: Boolean = false,
     onSelectedCategoryChanged: (String) -> Unit,
@@ -22,9 +30,13 @@ fun SortChip(
 ) {
     Surface(
         modifier = Modifier.padding(horizontal = 8.dp),
-        elevation = 1.dp,
-        shape = RoundedCornerShape(percent = 50),
-        color = if (isSelected) primary else primaryExtraLight
+        elevation = if (appTheme == Theme.DARK) {
+            if (isSelected) 60.dp else 2.dp
+        } else 1.dp,
+        shape = RoundedCornerShape(percent = 100),
+        color = if (appTheme == Theme.LIGHT){
+            if (isSelected) primary else primaryExtraLight
+        } else MaterialTheme.colors.surface
     ) {
         TextButton(
             onClick = {
@@ -34,8 +46,8 @@ fun SortChip(
         ) {
             Text(
                 text = category,
-                style = MaterialTheme.typography.overline,
-                color = if (isSelected) surface else primary
+                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colors.onSurface
             )
         }
     }

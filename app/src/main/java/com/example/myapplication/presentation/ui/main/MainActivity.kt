@@ -67,6 +67,7 @@ class MainActivity : BaseActivity() {
                                 SearchAppBar(
                                     scope = scope,
                                     scaffoldState = scaffoldState,
+                                    appTheme = appTheme,
                                     expanded = mainViewModel.expanded,
                                     toggleAppBar = { mainViewModel.toggleAppBar(it) },
                                     query = mainViewModel.query,
@@ -118,7 +119,8 @@ class MainActivity : BaseActivity() {
                         composable(route = Home.route) {
                             HomeScreen(
                                 viewModel = mainViewModel,
-                                navController = navController
+                                navController = navController,
+                                appTheme = appTheme
                             )
                         }
 

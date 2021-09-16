@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.ui.main.home
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.SettingPreferences
+import com.example.myapplication.SettingPreferences.*
 import com.example.myapplication.model.enums.SortFilter
 import com.example.myapplication.model.enums.SortFilterRegion
 import com.example.myapplication.model.enums.SortOptions
@@ -36,6 +39,7 @@ import kotlinx.coroutines.launch
 fun SearchAppBar(
     scope: CoroutineScope,
     scaffoldState: ScaffoldState,
+    appTheme: Theme,
     expanded: Boolean,
     toggleAppBar: (Boolean) -> Unit,
     query: String,
@@ -53,19 +57,19 @@ fun SearchAppBar(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = primaryLight,
+        color = MaterialTheme.colors.surface,
         elevation = 8.dp,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().animateContentSize()
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 10.dp, horizontal = 6.dp),
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .padding(horizontal = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 IconButton(
                     onClick = {
                         scope.launch {
@@ -79,9 +83,8 @@ fun SearchAppBar(
                 BasicTextField(
                     modifier = Modifier
                         .fillMaxWidth(.85f)
-                        .padding(start = 12.dp)
                         .background(
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colors.background,
                             shape = MaterialTheme.shapes.medium
                         )
                         .padding(horizontal = 18.dp, vertical = 10.dp),
@@ -116,6 +119,7 @@ fun SearchAppBar(
                 ) {
                     items(SortOptions.values()) { options ->
                         SortChip(
+                            appTheme = appTheme,
                             category = options.name,
                             isSelected = selectedOption == options,
                             onSelectedCategoryChanged = onSelectedOptionChanged,
@@ -132,6 +136,7 @@ fun SearchAppBar(
                     ) {
                         items(SortFilterRegion.values()) { region ->
                             SortChip(
+                                appTheme = appTheme,
                                 category = region.name,
                                 isSelected = selectedFilterRegion == region,
                                 onSelectedCategoryChanged = onSelectedFilterRegionChanged,
@@ -147,6 +152,7 @@ fun SearchAppBar(
                     ) {
                         items(SortFilter.values()) { filter ->
                             SortChip(
+                                appTheme = appTheme,
                                 category = filter.name,
                                 isSelected = selectedFilter == filter,
                                 onSelectedCategoryChanged = onSelectedFilterChanged,
