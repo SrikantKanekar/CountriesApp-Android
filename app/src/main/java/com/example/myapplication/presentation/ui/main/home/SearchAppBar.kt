@@ -16,7 +16,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Tune
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -26,12 +26,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.SettingPreferences
-import com.example.myapplication.SettingPreferences.*
+import com.example.myapplication.SettingPreferences.Theme
 import com.example.myapplication.model.enums.SortFilter
 import com.example.myapplication.model.enums.SortFilterRegion
 import com.example.myapplication.model.enums.SortOptions
-import com.example.myapplication.presentation.theme.primaryLight
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -61,7 +59,9 @@ fun SearchAppBar(
         elevation = 8.dp,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().animateContentSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize()
         ) {
             Row(
                 modifier = Modifier
@@ -99,7 +99,8 @@ fun SearchAppBar(
                     ),
                     textStyle = TextStyle(
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colors.onBackground,
                     )
                 )
                 IconButton(
@@ -128,7 +129,7 @@ fun SearchAppBar(
                     }
                 }
 
-                if (selectedOption == SortOptions.Region){
+                if (selectedOption == SortOptions.Region) {
                     val regionScrollState = rememberLazyListState()
                     LazyRow(
                         modifier = Modifier.padding(bottom = 8.dp),

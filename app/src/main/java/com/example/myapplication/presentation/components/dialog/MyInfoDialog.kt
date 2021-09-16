@@ -23,9 +23,11 @@ fun MyInfoDialog(
         text = { Text(text = message) },
         buttons = {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
                 horizontalArrangement = Arrangement.Center,
-                ) {
+            ) {
                 MyButton(
                     text = "Ok",
                     onClick = { removeStateMessage() },

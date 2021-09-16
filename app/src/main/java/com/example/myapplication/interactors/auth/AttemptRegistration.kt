@@ -1,7 +1,7 @@
 package com.example.myapplication.interactors.auth
 
-import com.example.myapplication.database.UserDao
 import com.example.myapplication.database.User
+import com.example.myapplication.database.UserDao
 import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.interactors.auth.AttemptRegistration.Companion.ERROR_SAVE_USER
 import com.example.myapplication.presentation.ui.auth.state.AuthViewState
@@ -30,7 +30,7 @@ class AttemptRegistration(
 
         val user = userDao.searchByEmail(email)
 
-        if (user != null){
+        if (user != null) {
             emit(
                 DataState.error<AuthViewState>(
                     response = Response(

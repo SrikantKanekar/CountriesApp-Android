@@ -2,11 +2,14 @@ package com.example.myapplication.presentation.ui.main.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -14,10 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.ImageLoader
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
+import com.example.myapplication.SettingPreferences.Theme
 import com.example.myapplication.presentation.ui.main.MainViewModel
 
 @ExperimentalCoilApi
@@ -25,8 +30,11 @@ import com.example.myapplication.presentation.ui.main.MainViewModel
 fun DetailScreen(
     name: String,
     viewModel: MainViewModel,
+    appTheme: Theme,
+    navController: NavController
 ) {
-    val country = viewModel.viewState.value.countries?.find { it.name == name }
+    val viewState = viewModel.viewState.collectAsState()
+    val country = viewState.value.countries?.find { it.name == name }
 
     country?.let {
         Column(
@@ -105,14 +113,30 @@ fun DetailScreen(
                     text = "area : ${country.area.toLong()} sq Km",
                     style = MaterialTheme.typography.body1
                 )
+            }
 
-                Spacer(modifier = Modifier.height(25.dp))
-
-                Text(text = "Borders", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                for (border in country.borders) {
-                    Text(text = border)
+            if (country.borders.isNotEmpty()) {
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, bottom = 12.dp),
+                    text = "Neighbours",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                LazyRow(
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 35.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    val neighbours =
+                        viewState.value.countries?.filter { country.borders.contains(it.alpha3Code) }
+                            .orEmpty()
+                    items(neighbours) { neighbour ->
+                        NeighbourCard(
+                            country = neighbour,
+                            appTheme = appTheme,
+                            onClick = { navController.navigate("Detail/${neighbour.name}") },
+                        )
+                    }
                 }
-
             }
         }
     }

@@ -33,7 +33,7 @@ fun SnackbarMessageType(
                 )
             }
 
-            when(response.messageType){
+            when (response.messageType) {
 
                 Success -> {
                     SuccessSnackbar(

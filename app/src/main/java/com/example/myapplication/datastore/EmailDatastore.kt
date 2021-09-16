@@ -29,7 +29,7 @@ constructor(
         }
 
     suspend fun updateUserEmail(email: String) {
-        withContext(IO){
+        withContext(IO) {
             application.emailDataStore.edit { preferences ->
                 preferences[AUTHENTICATED_USER_EMAIL] = email
             }

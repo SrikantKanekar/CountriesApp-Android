@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.ui.main
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,12 +18,21 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import com.example.myapplication.R
-import com.example.myapplication.SettingPreferences.*
-import com.example.myapplication.SettingPreferences.Theme.*
-import com.example.myapplication.presentation.navigation.Main
-import com.example.myapplication.presentation.navigation.Main.*
+import com.example.myapplication.SettingPreferences.Theme
+import com.example.myapplication.SettingPreferences.Theme.DARK
+import com.example.myapplication.SettingPreferences.Theme.LIGHT
+import com.example.myapplication.presentation.navigation.Main.Home
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import android.os.VibrationEffect
+
+import android.os.Build
+
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.os.Vibrator
+import androidx.core.content.ContextCompat
+
 
 @Composable
 fun Drawer(
@@ -49,7 +59,7 @@ fun Drawer(
         DrawerItem(
             name = "Home",
             onClick = {
-                if (currentRoute != Home.route){
+                if (currentRoute != Home.route) {
                     navController.navigate(Home.route) {
                         popUpTo(Home.route) { inclusive = true }
                     }
@@ -89,6 +99,18 @@ fun Drawer(
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 with(NotificationManagerCompat.from(context)) {
                     notify(1, builder.build())
+                }
+
+                val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    v.vibrate(
+                        VibrationEffect.createOneShot(
+                            400,
+                            VibrationEffect.DEFAULT_AMPLITUDE
+                        )
+                    )
+                } else {
+                    v.vibrate(400)
                 }
             }
         )

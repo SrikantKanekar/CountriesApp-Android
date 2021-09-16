@@ -1,8 +1,11 @@
-package com.example.myapplication.presentation.ui.main.home
+package com.example.myapplication.presentation.ui.main.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -19,25 +22,22 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
 import com.example.myapplication.SettingPreferences.Theme
-import com.example.myapplication.SettingPreferences.Theme.DARK
 import com.example.myapplication.model.Country
 
 @ExperimentalCoilApi
 @Composable
-fun CountryCard(
+fun NeighbourCard(
     country: Country,
     appTheme: Theme,
     onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
+        modifier = Modifier.clickable { onClick() },
         shape = MaterialTheme.shapes.large,
-        elevation = if (appTheme == DARK) 4.dp else 0.dp
+        elevation = if (appTheme == Theme.DARK) 4.dp else 0.dp
     ) {
-        Row(
-            modifier = Modifier.padding(12.dp)
+        Column(
+            modifier = Modifier.padding(10.dp)
         ) {
 
             val imageLoader = ImageLoader
@@ -60,20 +60,21 @@ fun CountryCard(
             )
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(start = 16.dp, top = 8.dp)
+                    .width(100.dp)
+                    .padding(top = 5.dp)
             ) {
                 Text(
                     text = country.name,
-                    fontWeight = FontWeight.W500,
-                    style = MaterialTheme.typography.h5,
+                    fontWeight = FontWeight.W400,
+                    style = MaterialTheme.typography.body1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    modifier = Modifier.padding(start = 1.dp),
                     text = country.capital,
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.subtitle2,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

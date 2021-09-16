@@ -14,8 +14,8 @@ fun LogoutDialog(
     visible: Boolean,
     logout: () -> Unit,
     dismiss: () -> Unit
-){
-    if (visible){
+) {
+    if (visible) {
         AlertDialog(
             title = { Text(text = "Are You Sure?") },
             buttons = {

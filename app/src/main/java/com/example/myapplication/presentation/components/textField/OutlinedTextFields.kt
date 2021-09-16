@@ -160,9 +160,11 @@ fun MyOutlinedTextField(
  */
 @Composable
 fun TextFieldError(textError: String) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(bottom = 2.dp)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 2.dp)
+    ) {
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = textError,

@@ -5,7 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
-import com.example.myapplication.SettingPreferences.Theme.*
+import com.example.myapplication.SettingPreferences.Theme.LIGHT
 import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.datastore.SettingDataStore
 import dagger.hilt.android.AndroidEntryPoint

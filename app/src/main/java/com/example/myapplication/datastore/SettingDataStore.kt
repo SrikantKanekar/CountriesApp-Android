@@ -37,7 +37,7 @@ constructor(
         }
 
     suspend fun updateTheme(theme: Theme) {
-        withContext(IO){
+        withContext(IO) {
             application.settingDataStore.updateData { settingPreferences ->
                 settingPreferences.toBuilder()
                     .setTheme(theme)

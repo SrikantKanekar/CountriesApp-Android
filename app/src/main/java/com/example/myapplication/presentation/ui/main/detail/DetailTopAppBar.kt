@@ -1,12 +1,10 @@
 package com.example.myapplication.presentation.ui.main.detail
 
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun DetailTopAppBar(
@@ -20,6 +18,8 @@ fun DetailTopAppBar(
             ) {
                 Icon(Icons.Filled.ArrowBack, "Back")
             }
-        }
+        },
+        backgroundColor = MaterialTheme.colors.surface,
+        elevation = 8.dp,
     )
 }

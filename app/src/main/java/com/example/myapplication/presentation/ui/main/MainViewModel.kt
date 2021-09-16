@@ -4,19 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.SettingPreferences.*
+import com.example.myapplication.SettingPreferences.Theme
 import com.example.myapplication.datastore.EmailDataStore
 import com.example.myapplication.datastore.SettingDataStore
 import com.example.myapplication.interactors.main.MainInteractors
 import com.example.myapplication.model.Country
 import com.example.myapplication.model.enums.SortFilter
-import com.example.myapplication.model.enums.SortFilter.*
-import com.example.myapplication.presentation.ui.BaseViewModel
+import com.example.myapplication.model.enums.SortFilter.Ascending
+import com.example.myapplication.model.enums.SortFilter.Descending
 import com.example.myapplication.model.enums.SortFilterRegion
-import com.example.myapplication.model.enums.SortFilterRegion.*
+import com.example.myapplication.model.enums.SortFilterRegion.Africa
 import com.example.myapplication.model.enums.SortOptions
 import com.example.myapplication.model.enums.SortOptions.*
-import com.example.myapplication.presentation.ui.main.state.MainStateEvent.*
+import com.example.myapplication.presentation.ui.BaseViewModel
+import com.example.myapplication.presentation.ui.main.state.MainStateEvent.DeleteUserEvent
+import com.example.myapplication.presentation.ui.main.state.MainStateEvent.GetCountriesEvent
 import com.example.myapplication.presentation.ui.main.state.MainViewState
 import com.example.myapplication.utils.DataState
 import com.example.myapplication.utils.StateEvent
@@ -76,7 +78,7 @@ constructor(
 
     fun toggleAppBar(value: Boolean) {
         expanded = value
-        if (value){
+        if (value) {
             query = ""
             resetFilters()
             sortOptions = Name

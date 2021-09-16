@@ -1,7 +1,5 @@
 package com.example.myapplication.presentation.ui.main.home
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -10,15 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.myapplication.SettingPreferences
-import com.example.myapplication.SettingPreferences.*
-import com.example.myapplication.presentation.theme.primary
-import com.example.myapplication.presentation.theme.primaryExtraLight
-import com.example.myapplication.presentation.theme.surface
+import com.example.myapplication.SettingPreferences.Theme
+import com.example.myapplication.presentation.theme.background
+import com.example.myapplication.presentation.theme.primaryLight
 
 @Composable
 fun SortChip(
@@ -29,13 +22,14 @@ fun SortChip(
     onExecuteSearch: () -> Unit,
 ) {
     Surface(
-        modifier = Modifier.padding(horizontal = 8.dp),
+        modifier = Modifier
+            .padding(horizontal = 8.dp),
         elevation = if (appTheme == Theme.DARK) {
             if (isSelected) 60.dp else 2.dp
         } else 1.dp,
         shape = RoundedCornerShape(percent = 100),
-        color = if (appTheme == Theme.LIGHT){
-            if (isSelected) primary else primaryExtraLight
+        color = if (appTheme == Theme.LIGHT) {
+            if (isSelected) primaryLight else background
         } else MaterialTheme.colors.surface
     ) {
         TextButton(
