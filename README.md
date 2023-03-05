@@ -21,6 +21,7 @@ A android app which displays the list of countries with sorting and search funct
 
 ### Auth screens
 
+<img src="/screenshots/welcome.png" width="260"> &emsp; 
 <img src="/screenshots/register.png" width="260"> &emsp; 
 <img src="/screenshots/login.png" width="260"> &emsp; 
 
